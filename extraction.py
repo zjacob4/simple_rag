@@ -41,6 +41,3 @@ def embed_chunks(chunks):
         vectorized_chunks.append(get_embeddings(chunk))
 
     return vectorized_chunks
-
-
-

@@ -1,11 +1,18 @@
 from pypdf import PdfReader
 from openai import OpenAI
+import faiss
+import numpy as np
+from dotenv import load_dotenv
+import os
 
-client = OpenAI()
+load_dotenv()
+oai_key = os.getenv("OPENAI_KEY")
+
+client = OpenAI(api_key=oai_key)
 
 def extract_full_text(file):
     # extract pages from file
-    pages = PdfReader(file)
+    pages = PdfReader(file).pages
 
     # compile text from each page into one large text
     full_text = ""
@@ -31,13 +38,22 @@ def extract_chunks(full_text):
 def get_embeddings(text, model="text-embedding-3-small"):
 
     text = text.replace("\n","")
-    return client.embeddings.create(input=text, model=model).data[0].embeddings
+    return client.embeddings.create(input=text, model=model).data[0].embedding
 
 # runs get_embeddings iteratively across a list of chunks
 def embed_chunks(chunks):
 
     vectorized_chunks = []
+
     for chunk in chunks:
         vectorized_chunks.append(get_embeddings(chunk))
 
-    return vectorized_chunks
+    return vectorized_chunks, chunks
+
+def create_findex(embeddings):
+
+    # create FAISS index
+    f_index = faiss.IndexFlatL2(len(embeddings[0]))
+    f_index.add(np.array(embeddings, dtype=np.float32))
+
+    return f_index

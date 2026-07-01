@@ -1,3 +1,6 @@
 openai
 pypdf
 streamlit
+faiss-cpu
+numpy
+python-dotenv

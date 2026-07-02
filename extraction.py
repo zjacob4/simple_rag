@@ -49,11 +49,3 @@ def embed_chunks(chunks):
         vectorized_chunks.append(get_embeddings(chunk))
 
     return vectorized_chunks, chunks
-
-def create_findex(embeddings):
-
-    # create FAISS index
-    f_index = faiss.IndexFlatL2(len(embeddings[0]))
-    f_index.add(np.array(embeddings, dtype=np.float32))
-
-    return f_index

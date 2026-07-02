@@ -6,13 +6,15 @@ def create_new_index_file():
 
     # initialize a flat index (brute-force euclidean distance)
     index = faiss.IndexFlatL2(dimension)
+    index = faiss.IndexIDMap2(index)
+
 
     # save a blank index
     faiss.write_index(index, "simple_rag.index")
 
     print(f"Total vectors in file: {index.ntotal}")
 
-    return 0
+    return index.ntotal
 
 if __name__ == "__main__":
     create_new_index_file()

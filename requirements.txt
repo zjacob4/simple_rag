@@ -4,3 +4,4 @@ streamlit
 faiss-cpu
 numpy
 python-dotenv
+pinecone-client

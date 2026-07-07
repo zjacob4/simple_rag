@@ -15,7 +15,7 @@ pc_client = Pinecone(api_key=pinecone_key)
 def add_knowledge():
 
     # pinecone remote index
-    index = pc_client.Index(host="INDEX_HOST")
+    index = pc_client.Index(host="https://simple-rag-b8g8ufl.svc.aped-4627-b74a.pinecone.io")
 
     # get file and embeddings
     file = input("Provide the knowledge file address: ")
@@ -24,16 +24,21 @@ def add_knowledge():
     embeddings, text_chunks = embed_chunks(chunks)
 
     # get list/array of existing IDs, sorted
-    stored_ids = index.list(namespace="__default__").sort()
+    stored_ids = []
+    #stored_ids = index.list(namespace="__default__").sort()
+    for page in index.list(namespace="__default__"):
+        for id in page:
+            stored_ids.append(int(id))
+    stored_ids.sort()
 
     # get largest stored ID and start next at +1
-    if stored_ids.size > 0:
+    if len(stored_ids) > 0:
         new_id = stored_ids[-1] + 1
     else:
         new_id = 0
 
-    # initialize underlying text chunks
-    text_lookup = {}
+    # initialize vector list
+    vectors_list = []
 
     # pair IDs with text chunks
     for i in range(len(embeddings)):
@@ -41,14 +46,15 @@ def add_knowledge():
         metadata_dict = {}
         metadata_dict["text"] = text_chunks[i]
         metadata_dict["source"] = file
-        full_vector["id"] = i + new_id
+        full_vector["id"] = str(i + new_id)
         full_vector["values"] = embeddings[i]
         full_vector["metadata"] = metadata_dict
+        vectors_list.append(full_vector)
 
     # add new items to the opened index
-    
+    index.upsert(namespace="__default__",vectors=vectors_list)
 
-    return index, text_lookup
+    return len(vectors_list)
 
 if __name__ == "__main__":
     add_knowledge()

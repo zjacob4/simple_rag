@@ -20,7 +20,7 @@ def search_with_context():
     try:
         response = client.responses.create(
             model="gpt-4o-mini",
-            instructions="you are a RAG agent. You will be provided with a query and the RAG-retrieved context in the format of 'The query is' + query + 'The retrieved context is ' + the retrieved chunks. Use this to answer the initial query as best you can.",
+            instructions="you are a RAG agent. You will be provided with a query and the RAG-retrieved context in the format of 'The query is' + query + 'The retrieved context is ' + the retrieved chunks. Use this to answer the initial query as best you can. However, do NOT use any information not found in the query + context to create your response.",
             input=query_with_context
         )
     except Exception as e:

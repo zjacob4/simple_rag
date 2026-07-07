@@ -10,7 +10,7 @@ def conduct_rag_retrieval(query):
     with open("text_lookup.pkl","rb") as f:
         text_lookup = pickle.load(f)
 
-    # cosine similarity search on embedded_query against knowledge (list of embeddings)
+    # euclidean brute force search on embedded_query against knowledge (list of embeddings)
     distances, indices = knowledge_index.search(np.array(embedded_query, dtype=np.float32).reshape(1,-1), k=2)
 
     # get retrieved chunks by index using text lookup dictionary

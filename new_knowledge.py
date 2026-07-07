@@ -2,6 +2,7 @@ from extraction import extract_full_text, extract_chunks, embed_chunks
 import faiss
 import numpy as np
 import pickle
+import os
 
 def add_knowledge():
     file = input("Provide the knowledge file address: ")
@@ -21,26 +22,30 @@ def add_knowledge():
     else:
         new_id = 0
 
+    # open existing pickle file if it exists
+    if os.path.exists("text_lookup.pkl"):
+        with open("text_lookup.pkl","rb") as f:
+            text_lookup = pickle.load(f)
+    else:
+        text_lookup = {}
+
     # pair IDs with text chunks
-    text_lookup = {}
     embedding_lookup = {}
     for i in range(len(embeddings)):
         text_lookup[i+new_id] = text_chunks[i]
         embedding_lookup[i+new_id] = embeddings[i]
 
-    # create FAISS index
-    f_index = faiss.IndexFlatL2(1536)
-    f_index = faiss.IndexIDMap(f_index)
-    f_index.add_with_ids(
+    # add new items to the opened index
+    index.add_with_ids(
         np.array(embeddings, dtype=np.float32),
         np.array(list(embedding_lookup.keys()), dtype=np.int64)
         )
 
-    faiss.write_index(f_index, "simple_rag.index")
+    faiss.write_index(index, "simple_rag.index")
     with open("text_lookup.pkl", "wb") as f:
         pickle.dump(text_lookup, f)
 
-    return f_index, text_lookup
+    return index, text_lookup
 
 if __name__ == "__main__":
     add_knowledge()

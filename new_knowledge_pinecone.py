@@ -28,7 +28,7 @@ def add_knowledge():
     #stored_ids = index.list(namespace="__default__").sort()
     for page in index.list(namespace="__default__"):
         for id in page:
-            stored_ids.append(int(id))
+            stored_ids.append(int(id.id))
     stored_ids.sort()
 
     # get largest stored ID and start next at +1

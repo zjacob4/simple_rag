@@ -1,4 +1,4 @@
-from retreiver import conduct_rag_retrieval
+from retreiver import faiss_retrieval
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -13,7 +13,7 @@ client = OpenAI(api_key=oai_key)
 def search_with_context():
 
     query = input("What is your query? ")
-    retrieved_chunks = conduct_rag_retrieval(query)
+    retrieved_chunks = faiss_retrieval(query)
 
     query_with_context = "The query is: "+query+" The retrieved context is: "+ ".".join(retrieved_chunks)
 

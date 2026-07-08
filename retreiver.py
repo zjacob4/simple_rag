@@ -32,7 +32,7 @@ def pinecone_retrieval(query):
     embedded_query = get_embeddings(query)
 
     # get pinecone index
-    index = pc_client.index("simple-rag")
+    index = pc_client.Index("simple-rag")
 
     # execute similarity search
     response = index.query(

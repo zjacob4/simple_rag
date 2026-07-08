@@ -1,6 +1,6 @@
 from extraction import get_embeddings
 import numpy as np
-import faiss
+#import faiss
 import pickle
 from pinecone import Pinecone
 from dotenv import load_dotenv

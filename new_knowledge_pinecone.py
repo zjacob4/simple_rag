@@ -1,5 +1,5 @@
 from extraction import extract_full_text, extract_chunks, embed_chunks
-import faiss
+#import faiss
 import numpy as np
 import pickle
 import os

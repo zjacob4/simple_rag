@@ -12,13 +12,12 @@ pinecone_key = os.getenv("PINECONE_API_KEY")
 
 pc_client = Pinecone(api_key=pinecone_key)
 
-def add_knowledge():
+def add_knowledge(file):
 
     # pinecone remote index
     index = pc_client.Index(host="https://simple-rag-b8g8ufl.svc.aped-4627-b74a.pinecone.io")
 
-    # get file and embeddings
-    file = input("Provide the knowledge file address: ")
+    # get file embeddings
     full_text = extract_full_text(file)
     chunks = extract_chunks(full_text)
     embeddings, text_chunks = embed_chunks(chunks)
@@ -45,7 +44,7 @@ def add_knowledge():
         full_vector = {}
         metadata_dict = {}
         metadata_dict["text"] = text_chunks[i]
-        metadata_dict["source"] = file
+        metadata_dict["source"] = file.name
         full_vector["id"] = str(i + new_id)
         full_vector["values"] = embeddings[i]
         full_vector["metadata"] = metadata_dict

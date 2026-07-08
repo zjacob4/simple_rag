@@ -1,7 +1,12 @@
 import streamlit as st
+import os
 
 from search_pinecone import search_with_context
 from new_knowledge_pinecone import add_knowledge
+
+for key in ("OPENAI_API_KEY","PINECONE_API_KEY"):
+    if key in st.secrets:
+        os.environ[key] = st.secrets[key]
 
 def homepage():
 

@@ -10,9 +10,8 @@ oai_key = os.getenv("OPENAI_KEY")
 # initialize the client 
 client = OpenAI(api_key=oai_key)
 
-def search_with_context():
+def search_with_context(query):
 
-    query = input("What is your query? ")
     retrieved_chunks = pinecone_retrieval(query)
 
     query_with_context = "The query is: "+query+" The retrieved context is: "+ ",".join(retrieved_chunks)

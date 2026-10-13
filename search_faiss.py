@@ -1,4 +1,4 @@
-from retreiver import faiss_retrieval
+from retriever import faiss_retrieval
 import os
 from dotenv import load_dotenv
 from openai import OpenAI

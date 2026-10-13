@@ -1,4 +1,4 @@
-from retreiver import pinecone_retrieval
+from retriever import pinecone_retrieval
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
